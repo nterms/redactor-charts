@@ -1,0 +1,27 @@
+{
+  "name": "redactor-charts",
+  "version": "0.0.0",
+  "description": "Chart.js plugin for Imperavi Redactor WYSIWYG editor.",
+  "main": "charts.js",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "imperavi",
+    "redactor",
+    "chart.js",
+    "plugin"
+  ],
+  "authors": [
+    "Saranga Abeykoon"
+  ],
+  "license": "MIT",
+  "homepage": "http://nterms.com",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
