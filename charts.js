@@ -1,4 +1,5 @@
 var redactorChart;
+var redactorSelectedColorSelector;
 
 $.Redactor.prototype.charts = function()
 {
@@ -40,7 +41,7 @@ $.Redactor.prototype.charts = function()
                         + '<table class="data-table table table-bordered">'
                             + '<tr>'
                                 + '<th>Labels</th>'
-                                + '<th>Data Set - <span>1</span></th>'
+                                + '<th><a href="#" data-color="#999999" class="color-selector" title="Select the color of the chart"></a> Data Set - <span>1</span></th>'
                                 + '<td class="button-cell"><button id="redactor-charts-adddataset" class="redactor-modal-button">Add Data Set</button></td>'
                             + '</tr>'
                             + '<tr>'
@@ -82,22 +83,70 @@ $.Redactor.prototype.charts = function()
                                 + '<td>'
                                     + '<select id="redactor-charts-type" >'
                                         + '<option value="bar">Bar</option>'
-                                        + '<option value="doughnut">Doughnut</option>'
+                                        //+ '<option value="pie">Pie</option>'
+                                        //+ '<option value="doughnut">Doughnut</option>'
                                         + '<option value="radar">Radar</option>'
                                         + '<option value="line">Line</option>'
-                                        + '<option value="polar-area">Polar Area</option>'
+                                        //+ '<option value="polar-area">Polar Area</option>'
                                     + '</select>'
                                 + '</td>'
                                 + '<th></th>'
                                 + '<td></td>'
                             + '</tr>'
                             + '<tr>'
-                                + '<td colspan="4"><button id="redactor-charts-options-update">Apply</button></td>'
+                                + '<td colspan="4"><br/></td>'
+                            + '</tr>'
+                            + '<tr>'
+                                + '<td colspan="4"><button id="redactor-charts-options-update">Preview</button></td>'
                             + '</tr>'
                         + '</table>'
+                        + '<p class="hint">Charts are inserted to the editor in image format. Once insterted, chart cannot be edited again. Please make sure your chart is complete before inserting.</p>'
                     + '</div>'
                 + '</div>'
 
+                + '<div id="redactor-charts-color-box" class="color-box">'
+                    + '<div class="swatches">'
+                        + '<div class="swatch" title="#f3cdc2"></div>'
+                        + '<div class="swatch" title="#f8e0c8"></div>'
+                        + '<div class="swatch" title="#fbf3cf"></div>'
+                        + '<div class="swatch" title="#c2ddd8"></div>'
+                        + '<div class="swatch" title="#d1eaf1"></div>'
+                        + '<div class="swatch" title="#e49c90"></div>'
+                        + '<div class="swatch" title="#edc297"></div>'
+                        + '<div class="swatch" title="#f4e19f"></div>'
+                        + '<div class="swatch" title="#86bbb5"></div>'
+                        + '<div class="swatch" title="#a7d0e2"></div>'
+                        + '<div class="swatch" title="#d66c5e"></div>'
+                        + '<div class="swatch" title="#e1a368"></div>'
+                        + '<div class="swatch" title="#eece77"></div>'
+                        + '<div class="swatch" title="#4f988f"></div>'
+                        + '<div class="swatch" title="#7cb9d5"></div>'
+                        + '<div class="swatch" title="#c64233"></div>'
+                        + '<div class="swatch" title="#d88342"></div>'
+                        + '<div class="swatch" title="#e9c056"></div>'
+                        + '<div class="swatch" title="#1c7873"></div>'
+                        + '<div class="swatch" title="#53a1c7"></div>'
+                        + '<div class="swatch" title="#93322b"></div>'
+                        + '<div class="swatch" title="#9e6337"></div>'
+                        + '<div class="swatch" title="#a98d43"></div>'
+                        + '<div class="swatch" title="#165753"></div>'
+                        + '<div class="swatch" title="#3f7990"></div>'
+                        + '<div class="swatch" title="#592420"></div>'
+                        + '<div class="swatch" title="#624025"></div>'
+                        + '<div class="swatch" title="#6a5b30"></div>'
+                        + '<div class="swatch" title="#163935"></div>'
+                        + '<div class="swatch" title="#294c5f"></div>'
+                        + '<div class="swatch" title="#000000"></div>'
+                        + '<div class="swatch" title="#333333"></div>'
+                        + '<div class="swatch" title="#666666"></div>'
+                        + '<div class="swatch" title="#999999"></div>'
+                        + '<div class="swatch" title="#cccccc"></div>'
+                    + '</div>'
+                    + '<div class="hex">'
+                        + '<input type="text" size="7" id="redactor-charts-color-hex" />'
+                        + '<button id="redactor-charts-color-apply">Apply</button>'
+                    + '</div>'
+                + '</div>'
             + '</section>';
         },
         loadStyles: function()
@@ -108,7 +157,7 @@ $.Redactor.prototype.charts = function()
                 + '#redactor-modal table { width: 100% } '
                 + '#redactor-modal table.data-table { min-width: 100%; width: auto; } '
                 + '#redactor-modal table.data-table td { min-width: 100px; } '
-                + '#redactor-modal table td, #redactor-modal table th { padding: 6px; } '
+                + '#redactor-modal table td, #redactor-modal table th { padding: 6px; white-space: nowrap; } '
                 + '#redactor-modal table td.button-cell { text-align: center; } '
                 + '#redactor-modal table td.button-cell a { font-size: small; } '
                 + '#redactor-modal .table-bordered { border-collpased: collapsed; } '
@@ -117,6 +166,14 @@ $.Redactor.prototype.charts = function()
                 + '#redactor-modal .chart-container { border: 1px solid #DDD; overflow: auto; max-height: 300px; max-width: 100%; } '
                 + '#redactor-modal canvas { height: 160px; width: 100%; } '
                 + '#redactor-modal .data { overflow: auto; max-height: 300px; max-width: 100%; } '
+                + '#redactor-charts-color-box { background-color: #FFF; border: 1px solid #DDD; box-shadow: 4px 4px 20px #999; position: absolute; width: 174px; z-index: 99999; } '
+                + '#redactor-charts-color-box .swatches { margin: 20px 12px 12px 20px; } '
+                + '#redactor-charts-color-box .swatch { cursor: pointer; float: left; height: 16px; margin: 0 8px 8px 0; width: 20px; } '
+                + '#redactor-charts-color-box .hex { margin: 0 20px 20px; } '
+                + '#redactor-charts-color-box .hex input { width: 100%; } '
+                + '#redactor-charts-color-box .hex button { margin-top: 10px; width: 100%; } '
+                + '#redactor-modal .color-selector { background-color: #999999; border-radius: 50%; display: inline-block; height: 20px; vertical-align: middle; width: 20px; } '
+                + '#redactor-modal .hint { color: #888; font-size: small; max-width: 100%; } '
                 + '.redactor-modal-button { width: 100%; }';
             style.append(css)
             $('head').append(style);
@@ -125,10 +182,50 @@ $.Redactor.prototype.charts = function()
         {
             var charts = this.charts;
 
+            $('#redactor-charts-color-box .swatch').each(function(i, el) {
+                var color = $(el).attr('title');
+                $(el).css('background-color', color);
+
+                $(el).hover(function() {
+                    $('#redactor-charts-color-box .hex input').val(color);
+                }).click(function() {
+                    $('#redactor-charts-color-apply').click();
+                });
+            });
+
+            $('#redactor-charts-color-box').hide();
+
+            $('#redactor-charts-color-box').on('click', function(evt) {
+                evt.preventDefault();
+                evt.stopPropagation();
+            });
+
+            $(document).on('click', '.color-selector', function(evt) {
+                evt.preventDefault();
+                evt.stopPropagation();
+
+                var pos = $(this).position();
+                pos.y = pos.y + 24;
+
+                $('#redactor-charts-color-box').show().css(pos);
+                redactorSelectedColorSelector = this;
+            });
+
+            $('#redactor-charts-color-apply').click(function(evt) {
+                var color = $('#redactor-charts-color-box .hex input').val();
+                console.log('clicked');
+                $(redactorSelectedColorSelector).css('background-color', color).data('color', color);
+                $('#redactor-charts-color-box').hide();
+                $('#redactor-charts-color-box').hide();
+            });
+
+            $('#redactor-modal').on('click', function() {
+                $('#redactor-charts-color-box').hide();
+            });
+
             $('#redactor-charts-options-update').on('click', function() {
                 charts.draw();
             });
-
             $('#redactor-charts-adddataset').on('click', function() {
                 var table = $('#redactor-modal-charts .data-table');
                 var rows = table.find('tr');
@@ -136,7 +233,7 @@ $.Redactor.prototype.charts = function()
                 rows.each(function(i, el) {
                     var index = ($(el).find('th').length);
                     if(i == 0) {
-                        $(el).find('td:last').before($('<th>').html('Data Set - <span>' + index + '</span>'));
+                        $(el).find('td:last').before($('<th>').html('<a href="#" data-color="#999999" class="color-selector" title="Select the color of the chart"></a> Data Set - <span>' + index + '</span>'));
                     } else if(i < (rows.length - 1)) {
                         $(el).find('td:last').before($('<td>').html('<input />'));
                     } else {
@@ -181,15 +278,64 @@ $.Redactor.prototype.charts = function()
             });
         },
         fetchData: function(type) {
+            var charts = this.charts;
             var labels = [];
+            var dataSetLabels = [];
+            var dataSets = [];
+            var colors = [];
             $('#redactor-modal-charts .data-table tr').each(function(i, tr) {
                 if(i == 0) {
-
+                    $(tr).find('th').each(function(j, th) {
+                        if(j == 0) return true;
+                        var label = th.textContent || th.innerText || '';
+                        var color = $(th).find('.color-selector').data('color');
+                        dataSetLabels.push(label);
+                        colors.push(color);
+                    });
                 } else {
-                    labels.push($(tr).find('input:first').val());
+                    $(tr).find('input').each(function(j, input) {
+                        var value = $(input).val();
+
+                        if(j == 0) {
+                            if(typeof value != 'undefined') {
+                                labels.push(value);
+                            }
+                        } else {
+                            if(typeof dataSets[j] != 'undefined' && dataSets[j] instanceof Array) {
+                                dataSets[j].push(value);
+                            } else {
+                                dataSets[j] = [value];
+                            }
+                        }
+                    });
                 }
 
             });
+            console.log(dataSets);
+
+            var chartDataSets = [];
+
+            $.each(dataSetLabels, function(i, label) {
+                var data = {};
+                data.label = label;
+                if(typeof colors[i] != 'undefined') {
+                    var color = charts.hexToRgb(colors[i]);
+                    data.fillColor = 'rgba(' + color.r + ',' + color.g + ',' + color.b + ', 0.5)';
+                    data.strokeColor = 'rgba(' + color.r + ',' + color.g + ',' + color.b + ', 1)';
+                    data.pointColor = 'rgba(' + color.r + ',' + color.g + ',' + color.b + ', 1)';
+                    data.pointStrokeColor = '#FFFFFF';
+                    data.pointHighlightFill = '#FFFFFF';
+                    data.pointHighlightStroke = 'rgba(' + color.r + ',' + color.g + ',' + color.b + ', 1)';
+                }
+                data.data = (typeof dataSets[i+1] != 'undefined') ? dataSets[i+1] : [];
+
+                chartDataSets.push(data);
+            });
+
+            return {
+                labels: labels,
+                datasets: chartDataSets
+            };
         },
         draw: function()
         {
@@ -206,10 +352,13 @@ $.Redactor.prototype.charts = function()
             var chart = new Chart(ctx);
             var type = $('#redactor-charts-type').val();
             var data = this.charts.fetchData(type);
-
+            console.log(data);
             switch(type) {
                 case 'bar':
                     redactorChart = chart.Bar(data);
+                    break;
+                case 'pie':
+                    redactorChart = chart.Pie(data);
                     break;
                 case 'doughnut':
                     redactorChart = chart.Doughnut(data);
@@ -234,6 +383,20 @@ $.Redactor.prototype.charts = function()
             this.selection.restore();
             this.insert.html(img);
             this.code.sync();
+        },
+        hexToRgb: function(hex) {
+            // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+            var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+            hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+                return r + r + g + g + b + b;
+            });
+
+            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
         }
     };
 }
