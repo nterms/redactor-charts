@@ -1,6 +1,6 @@
 {
   "name": "redactor-charts",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "Chart.js plugin for Imperavi Redactor WYSIWYG editor.",
   "main": "charts.js",
   "moduleType": [

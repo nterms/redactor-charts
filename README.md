@@ -1,15 +1,15 @@
 redactor-charts
 ===============
 
-A (Chart.js)[http://www.chartjs.org] plugin for (Redactor)[http://imperavi.com/redactor].
+A [Chart.js](http://www.chartjs.org) plugin for [Redactor](http://imperavi.com/redactor).
 
 Prerequisites
 -------------
 
-(Redactor)[http://imperavi.com/redactor/download/] is NOT FREE. So you may need to consider buying a license before using it on your website.
+[Redactor](http://imperavi.com/redactor/download/) is NOT FREE. So you may need to consider buying a license before using it on your website.
 
 
-Installing with (Bower)[http://bower.io]
+Installing with [Bower](http://bower.io)
 ----------------------------------------
 
 ```
